@@ -7,7 +7,7 @@ class HttpRequestManager {
 
   companion object {
 
-    private const val REPOSITORY_URL = "https://plugins.jetbrains.com/files"
+    private const val REPOSITORY_URL = "https://plugins.jetbrains.com"
     const val API_URL = "$REPOSITORY_URL/api/plugins"
     const val DOWNLOAD_URL = "$REPOSITORY_URL/files"
 
