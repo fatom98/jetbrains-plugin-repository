@@ -6,10 +6,9 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import data.PluginApiInfo
 import data.PluginId
 import data.PluginReleaseInfo
-import java.io.File
 import java.net.URI
 import java.nio.file.Path
-import kotlin.io.path.createDirectories
+import kotlin.io.path.createParentDirectories
 import kotlin.io.path.exists
 
 class Plugin(pluginUrl: String) {
@@ -23,8 +22,9 @@ class Plugin(pluginUrl: String) {
   lateinit var since: String
   lateinit var until: String
   lateinit var file: String
-  private lateinit var data: String
+  private lateinit var data: ByteArray
   private lateinit var path: Path
+  private lateinit var compatibleVersions: Map<String, String>
 
   init {
     val apiInfo = getApiInfo()
@@ -34,7 +34,13 @@ class Plugin(pluginUrl: String) {
     setReleaseInfoValues(releaseInfo)
   }
 
-  fun download() {
+  fun isCompatible(ide: String): Boolean {
+    return compatibleVersions.keys.contains(ide)
+  }
+
+  fun download(outDir: String) {
+    path = Path.of("${outDir}/plugins/${file}")
+
     if (path.exists()) {
       return
     }
@@ -70,17 +76,13 @@ class Plugin(pluginUrl: String) {
     version = releaseInfo.version.value
     notes = releaseInfo.notes
     since = releaseInfo.since
-    until = releaseInfo.until
+    until = releaseInfo.until.value
     file = releaseInfo.file
-    path = Path.of("files/${file}")
+    compatibleVersions = releaseInfo.compatibleVersions
   }
 
   private fun writeToFile() {
-    path.parent.createDirectories()
-
-    val file = File(path.toString())
-    file.createNewFile()
-    file.writeText(data)
+    path.createParentDirectories().toFile().writeBytes(data)
   }
 
   companion object {

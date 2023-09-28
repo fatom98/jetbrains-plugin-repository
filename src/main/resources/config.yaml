@@ -1,4 +1,6 @@
 serverUrl: http://localhost:3000
+outDir: out
+ide: IDEA
 plugins:
   - https://plugins.jetbrains.com/plugin/10037-csv
   - https://plugins.jetbrains.com/plugin/10080-rainbow-brackets

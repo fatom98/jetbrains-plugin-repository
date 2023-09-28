@@ -4,16 +4,20 @@ data class PluginReleaseInfo(
   val version: Version,
   val notes: String,
   val since: String,
-  val until: String,
-  val sinceUntil: String,
-  val file: String
+  val until: Until,
+  val file: String,
+  val cdate: String,
+  val compatibleVersions: Map<String, String>
 ) : Comparable<PluginReleaseInfo> {
 
   override operator fun compareTo(other: PluginReleaseInfo): Int {
-    if (sinceUntil == other.sinceUntil) {
-      return version.compareTo(other.version)
-    }
+    var result = version.compareTo(other.version)
+    if (result != 0) return result
 
-    return sinceUntil.compareTo(other.sinceUntil)
+    result = until.compareTo(other.until)
+    if (result != 0) return result
+
+    return (cdate.toLong() - other.cdate.toLong()).toInt()
   }
+
 }

@@ -11,13 +11,15 @@ class HttpRequestManager {
     const val API_URL = "$REPOSITORY_URL/api/plugins"
     const val DOWNLOAD_URL = "$REPOSITORY_URL/files"
 
-    fun sendGetRequest(uri: URI): String {
-      val client = HttpClient.newHttpClient()
-      val request = HttpRequest.newBuilder()
-        .uri(uri)
-        .build()
+    fun sendGetRequest(uri: URI): ByteArray {
+      var response: HttpResponse<ByteArray>
+      do {
+        val client = HttpClient.newHttpClient()
+        val request = HttpRequest.newBuilder().uri(uri).build()
 
-      val response = client.send(request, HttpResponse.BodyHandlers.ofString())
+        response = client.send(request, HttpResponse.BodyHandlers.ofByteArray())
+      } while (response.statusCode() != 200)
+
       return response.body()
     }
   }

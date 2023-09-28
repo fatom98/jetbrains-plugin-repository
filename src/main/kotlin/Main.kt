@@ -14,10 +14,18 @@ fun main() {
     return
   }
 
-  val pluginsFile = PluginsFile(config.serverUrl)
+  val pluginsFile = PluginsFile(config)
 
   plugins.forEach { plugin ->
-    plugin.download()
+    if (!plugin.isCompatible(config.ide)) {
+      println(
+        "$plugin is not compatible with ${config.ide}. Ignoring the plugin. " +
+            "Consider removing it from the plugins list."
+      )
+      return@forEach
+    }
+
+    plugin.download(config.outDir)
     pluginsFile.addPlugin(plugin)
   }
 
