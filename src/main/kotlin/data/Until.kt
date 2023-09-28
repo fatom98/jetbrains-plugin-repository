@@ -2,12 +2,16 @@ package data
 
 import com.fasterxml.jackson.annotation.JsonValue
 
-class Version(value: String) : Comparable<Version> {
+class Until(value: String) : Comparable<Until> {
 
   @JsonValue
   val value = removeSpecialCharacters(value)
 
-  override operator fun compareTo(other: Version): Int {
+  override operator fun compareTo(other: Until): Int {
+    if (value == "" && other.value == "") return 0
+    if (value == "") return 1
+    if (other.value == "") return -1
+
     val splitThis = value.split(".")
     val splitOther = other.value.split(".")
 
@@ -22,9 +26,9 @@ class Version(value: String) : Comparable<Version> {
   companion object {
     private val specialCharacters = listOf('+', '-', '(')
 
-    private fun removeSpecialCharacters(version: String): String {
-      var value = version
-      specialCharacters.forEach {value = value.split(it)[0]}
+    private fun removeSpecialCharacters(until: String): String {
+      var value = until
+      specialCharacters.forEach { value = value.split(it)[0] }
 
       return value
     }

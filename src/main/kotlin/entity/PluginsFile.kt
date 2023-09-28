@@ -2,7 +2,7 @@ package entity
 
 import java.io.File
 
-class PluginsFile(private val serverUrl: String) {
+class PluginsFile(private val config: Config) {
 
   private val header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<plugins>\n"
   private val footer = "\n</plugins>"
@@ -10,7 +10,7 @@ class PluginsFile(private val serverUrl: String) {
 
   fun addPlugin(plugin: Plugin) {
     allPluginsMetaData += """
-    <plugin id="${plugin.xmlId}" url="$serverUrl/files/${plugin.file}" version="${plugin.version}">
+    <plugin id="${plugin.xmlId}" url="${config.serverUrl}/files/${plugin.file}" version="${plugin.version}">
       <name> ${plugin.name} </name>
       <description> <![CDATA[${plugin.description}]]> </description>
       <change-notes> <![CDATA[${plugin.notes} ]]> </change-notes>
@@ -22,7 +22,7 @@ class PluginsFile(private val serverUrl: String) {
   fun createFile() {
     val content = header + allPluginsMetaData + footer
 
-    val file = File("files/updatePlugins.xml")
+    val file = File("${config.outDir}/updatePlugins.xml")
     file.createNewFile()
     file.writeText(content)
   }
