@@ -1,4 +1,7 @@
-package data
+package entity
+
+import data.Until
+import data.Version
 
 data class PluginReleaseInfo(
   val version: Version,
