@@ -1,4 +1,4 @@
-package data
+package entity
 
 data class PluginApiInfo(
   val name: String,

@@ -3,9 +3,7 @@ package entity
 import HttpRequestManager
 import ObjectMapperProvider
 import com.fasterxml.jackson.module.kotlin.readValue
-import data.PluginApiInfo
 import data.PluginId
-import data.PluginReleaseInfo
 import java.net.URI
 import java.nio.file.Path
 import kotlin.io.path.createParentDirectories
