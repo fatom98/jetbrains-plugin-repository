@@ -2,10 +2,10 @@ package data
 
 import com.fasterxml.jackson.annotation.JsonValue
 
-class Version(value: String) : Comparable<Version> {
+data class Version(private val _value: String) : Comparable<Version> {
 
   @JsonValue
-  val value = removeSpecialCharacters(value)
+  val value = removeSpecialCharacters(_value)
 
   override operator fun compareTo(other: Version): Int {
     val splitThis = value.split(".")
