@@ -1,6 +1,6 @@
 package data
 
-class PluginId(pluginUrl: String) {
+data class PluginId(private val pluginUrl: String) {
 
   val value = extractPluginId(pluginUrl)
 

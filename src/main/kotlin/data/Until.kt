@@ -2,10 +2,10 @@ package data
 
 import com.fasterxml.jackson.annotation.JsonValue
 
-class Until(value: String) : Comparable<Until> {
+data class Until(private val _value: String) : Comparable<Until> {
 
   @JsonValue
-  val value = removeSpecialCharacters(value)
+  val value = removeSpecialCharacters(_value)
 
   override operator fun compareTo(other: Until): Int {
     if (value == "" && other.value == "") return 0
