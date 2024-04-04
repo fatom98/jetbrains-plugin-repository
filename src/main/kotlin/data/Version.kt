@@ -2,32 +2,33 @@ package data
 
 import com.fasterxml.jackson.annotation.JsonValue
 
-class Version(value: String) : Comparable<Version> {
+@JvmInline
+value class Version private constructor(@JsonValue val value: String) : Comparable<Version> {
 
-  @JsonValue
-  val value = removeSpecialCharacters(value)
+    override operator fun compareTo(other: Version): Int {
+        val splitThis = value.split(".")
+        val splitOther = other.value.split(".")
 
-  override operator fun compareTo(other: Version): Int {
-    val splitThis = value.split(".")
-    val splitOther = other.value.split(".")
+        for ((t, o) in splitThis.zip(splitOther)) {
+            if (t.toInt() > o.toInt()) return 1
+            if (t.toInt() < o.toInt()) return -1
+        }
 
-    for ((t, o) in splitThis.zip(splitOther)) {
-      if (t.toInt() > o.toInt()) return 1
-      if (t.toInt() < o.toInt()) return -1
+        return splitThis.size - splitOther.size
     }
 
-    return splitThis.size - splitOther.size
-  }
+    companion object {
 
-  companion object {
-    private val specialCharacters = listOf('+', '-', '(')
+        private val specialCharacters = listOf('+', '-', '(')
 
-    private fun removeSpecialCharacters(version: String): String {
-      var value = version
-      specialCharacters.forEach {value = value.split(it)[0]}
+        fun of(version: String): Version = Version(removeSpecialCharacters(version))
 
-      return value
+        private fun removeSpecialCharacters(version: String): String {
+            var value = version
+            specialCharacters.forEach { value = value.split(it)[0] }
+
+            return value
+        }
     }
-  }
 
 }

@@ -1,11 +1,16 @@
 package data
 
-class PluginId(pluginUrl: String) {
+@JvmInline
+value class PluginId private constructor(val value: String) {
 
-  val value = extractPluginId(pluginUrl)
+    companion object {
 
-  private fun extractPluginId(pluginUrl: String): String {
-    return pluginUrl.split("-").first().split("/").last()
-  }
+        fun of(pluginUrl: String): PluginId = PluginId(extractPluginId(pluginUrl))
 
+        private fun extractPluginId(pluginUrl: String): String = pluginUrl
+            .split("-")
+            .first()
+            .split("/")
+            .last()
+    }
 }
